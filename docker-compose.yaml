@@ -1,6 +1,5 @@
 version: '3.5'
 
-
 services:
 
   zookeeper:
@@ -8,6 +7,15 @@ services:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
 
   kafka:
     image: wurstmeister/kafka
@@ -22,7 +30,7 @@ services:
       KAFKA_ADVERTISED_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_CREATE_TOPICS: "customers:1:1"
+      KAFKA_CREATE_TOPICS: "customers:6:1"
     restart: on-failure
 
   kafkaviewer:
@@ -36,9 +44,27 @@ services:
         - KAFKA_BROKERCONNECT=kafka:9092
         - SERVER_SERVLET_CONTEXTPATH=/
 
+  customerscgen: 
+    image: vitkodmitriy/customer-score-generator:1
+
   customerwebsrv:
     image: vitkodmitriy/customer-web-service:1
     ports:
       - "8008:8008"  
-  customerscgen: 
-    image: vitkodmitriy/customer-score-generator:1
+
+  customerwebsrv1:
+    image: vitkodmitriy/customer-web-service:1
+
+  customerwebsrv2:
+    image: vitkodmitriy/customer-web-service:1
+
+  customerwebsrv3:
+    image: vitkodmitriy/customer-web-service:1
+
+
+  customerwebsrv4:
+    image: vitkodmitriy/customer-web-service:1
+
+
+  customerwebsrv5:
+    image: vitkodmitriy/customer-web-service:1
